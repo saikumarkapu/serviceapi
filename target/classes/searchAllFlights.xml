@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:ee="http://www.mulesoft.org/schema/mule/ee/core" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/ee/core http://www.mulesoft.org/schema/mule/ee/core/current/mule-ee.xsd">
+	<http:request-config name="HTTP_Request_configuration" doc:name="HTTP Request configuration" doc:id="1de0097b-00cb-4bde-90cc-acccafba0c4d" >
+		<http:request-connection host="localhost" port="8081" />
+	</http:request-config>
+	<flow name="searchAllFlightsFlow" doc:id="8d0542ce-fe9a-45f4-8fbf-53ff6a8ef332" >
+		<logger level="INFO" doc:name="Logger" doc:id="0764e14a-9796-4ee1-b719-964828fd7228" message="searchAllFlightsFlow starts.............."/>
+		<scatter-gather doc:name="Scatter-Gather" doc:id="2075e144-ed01-4beb-9440-b4ae42a34cc8" >
+			<route >
+				<http:request method="GET" doc:name="AirIndia Request" doc:id="6a71a0db-925b-4c21-8565-09d15146651d" config-ref="HTTP_Request_configuration" path="/airIndia/api/airIndiaFlights">
+					<http:query-params ><![CDATA[#[output application/java
+---
+{
+	destination : attributes.queryParams.destination,
+	source : attributes.queryParams.source,
+	doj : attributes.queryParams.doj
+}]]]></http:query-params>
+				</http:request>
+			</route>
+			<route >
+				<http:request method="GET" doc:name="Indigo Request" doc:id="dfcc6017-4d7b-4679-b166-65199ef53e00" config-ref="HTTP_Request_configuration" path="/indigo/api/indigoFlights">
+					<http:query-params ><![CDATA[#[output application/java
+---
+{
+	destination : attributes.queryParams.destination,
+	source : attributes.queryParams.source,
+	doj : attributes.queryParams.doj
+}]]]></http:query-params>
+				</http:request>
+			</route>
+		</scatter-gather>
+		<ee:transform doc:name="Transform Message" doc:id="6f0ac861-4c9b-4a1d-b57e-616223e058c9" >
+			<ee:message >
+				<ee:set-payload ><![CDATA[%dw 2.0
+output application/json
+---
+{
+	airIndiaFlights:payload[0].payload,
+	indigoFlights:payload[1].payload
+}]]></ee:set-payload>
+			</ee:message>
+		</ee:transform>
+	</flow>
+</mule>

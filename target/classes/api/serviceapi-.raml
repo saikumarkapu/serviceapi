@@ -1,0 +1,95 @@
+#%RAML 1.0
+title: serviceapi 
+
+/searchAllFlights:
+  get:
+    queryParameters:
+      source:
+        example: BLR
+      destination:
+        example: DEL
+      doj:
+        example: 30-Jan-2021
+    responses:
+      200:
+        body:
+          application/json:
+            example:
+             {
+              "indigoFlights": [
+                  {
+                      "ID": 101,
+                      "airline": "Indigo",
+                      "flightCode": "IND101",
+                      "fromAirportCode": "DEL",
+                      "toAirportCode": "CHN",
+                      "departureDate": "30-Jan-2021",
+                      "emptySeats": 0,
+                      "totalSeats": 200,
+                      "price": 199,
+                      "planeType": "Indigo 737"
+                  },
+                  {
+                      "ID": 102,
+                      "airline": "Indigo",
+                      "flightCode": "IND102",
+                      "fromAirportCode": "DEL",
+                      "toAirportCode": "CHN",
+                      "departureDate": "30-Jan-2021",
+                      "emptySeats": 24,
+                      "totalSeats": 350,
+                      "price": 450,
+                      "planeType": "Indigo 747"
+                  },
+                  {
+                      "ID": 103,
+                      "airline": "Indigo",
+                      "flightCode": "IND103",
+                      "fromAirportCode": "DEL",
+                      "toAirportCode": "CHN",
+                      "departureDate": "30-Jan-2021",
+                      "emptySeats": 33,
+                      "totalSeats": 400,
+                      "price": 450,
+                      "planeType": "Indigo 757"
+                  }
+              ],
+              "airIndiaFlights": [
+                  {
+                      "Id": "201",
+                      "airlineName": "AirIndia",
+                      "fCode": "AI201",
+                      "fromAirportCode": "DEL",
+                      "toAirportCode": "CHN",
+                      "departureDate": "30-Jan-2021",
+                      "emptySeats": "0",
+                      "totalSeats": 200,
+                      "price": "199",
+                      "planeType": "AirIndia 737"
+                  },
+                  {
+                      "Id": "202",
+                      "airlineName": "AirIndia",
+                      "fCode": "AI202",
+                      "fromAirportCode": "DEL",
+                      "toAirportCode": "CHN",
+                      "departureDate": "30-Jan-2021",
+                      "emptySeats": "24",
+                      "totalSeats": 350,
+                      "price": "450",
+                      "planeType": "AirIndia 747"
+                  },
+                  {
+                      "Id": "203",
+                      "airlineName": "AirIndia",
+                      "fCode": "AI203",
+                      "fromAirportCode": "DEL",
+                      "toAirportCode": "CHN",
+                      "departureDate": "30-Jan-2021",
+                      "emptySeats": "33",
+                      "totalSeats": 400,
+                      "price": "450",
+                      "planeType": "AirIndia 757"
+                  }
+              ]
+          }
